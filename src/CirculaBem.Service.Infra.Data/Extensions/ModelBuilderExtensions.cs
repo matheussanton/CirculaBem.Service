@@ -11,5 +11,11 @@ namespace CirculaBem.Service.Infra.Data.Extensions
                         .HasKey(x => x.RegistrationNumber);
         }
 
+        public static void ModelProduct(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProductEntityDomain>()
+                        .HasKey(x => x.Id);
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 using CirculaBem.Service.Domain.User.Commands.Handler;
 using CirculaBem.Service.Domain.Responses;
 using Microsoft.Extensions.DependencyInjection;
+using CirculaBem.Service.Domain.Product.Commands.Handler;
+using CirculaBem.Service.Domain.Product.Queries;
 
 namespace CirculaBem.Service.Dependencies.Extensions
 {
@@ -10,6 +12,7 @@ namespace CirculaBem.Service.Dependencies.Extensions
         {
             RegisterHandlers(services);
             RegisterResponses(services);
+            RegisterQueries(services);
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         }
@@ -17,6 +20,12 @@ namespace CirculaBem.Service.Dependencies.Extensions
         private static void RegisterHandlers(this IServiceCollection services)
         {
             services.AddScoped<UserHandler>();
+            services.AddScoped<ProductHandler>();
+        }
+
+        private static void RegisterQueries(this IServiceCollection services)
+        {
+            services.AddScoped<ProductQueryHandler>();
         }
 
         private static void RegisterResponses(this IServiceCollection services)

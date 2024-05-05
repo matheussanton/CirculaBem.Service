@@ -1,3 +1,4 @@
+using CirculaBem.Service.Domain.Product.Interfaces;
 using CirculaBem.Service.Domain.Settings;
 using CirculaBem.Service.Domain.User.Interfaces;
 using CirculaBem.Service.Infra.Data.Context;
@@ -24,6 +25,7 @@ namespace CirculaBem.Service.Dependencies.Extensions
 
             //Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             return services;
         }

@@ -15,7 +15,7 @@ namespace CirculaBem.Service.Domain.Entities
         public string Password { get; private set; }
         [Column("isverified", TypeName = "bool")]
         public bool IsVerified { get; private set; } = false;
-        [Column("registrationnumber", TypeName = "varchar(11)")]
+        [Column("registrationnumber", TypeName = "varchar")]
         public string RegistrationNumber { get; private set; }
 
         public UserEntityDomain(string firstName, string lastName, string email, string password, string registrationNumber)

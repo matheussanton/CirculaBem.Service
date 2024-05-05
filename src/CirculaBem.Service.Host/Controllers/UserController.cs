@@ -34,13 +34,5 @@ namespace CirculaBem.Service.Host.Controllers
 
             return Ok(response.Notifications);
         }
-
-        // [HttpPatch("verify")]
-        // public async Task<IActionResult> GetAsync()
-        // {
-        //     var users = await _userRepository.GetAllAsync();
-
-        //     return Ok(users);
-        // }
     }
 }
