@@ -45,6 +45,54 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             }
         }
 
+        public async Task UpdateAsync(ProductEntityDomain product)
+        {
+            try
+            {
+                _context.Products.Update(product);
+
+                var productImages = await _context.ProductImages.Where(pi => pi.ProductId == product.Id).ToListAsync();
+                var productAvailabilities = await _context.ProductAvailabilities.Where(pa => pa.ProductId == product.Id).ToListAsync();
+
+                _context.ProductImages.RemoveRange(productImages);
+                _context.ProductAvailabilities.RemoveRange(productAvailabilities);
+
+                foreach (var image in product.ImageUrls)
+                {
+                    await _context.ProductImages.AddAsync(image);
+                }
+
+                foreach (var availability in product.Availabilities)
+                {
+                    await _context.ProductAvailabilities.AddAsync(availability);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR UPDATING PRODUCT");
+            }
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            try
+            {
+                var product = await _context.Products.FindAsync(id);
+
+                if (product == null)
+                    return;
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR DELETING PRODUCT");
+            }
+        }
+
         public async Task<List<SelectProduct>> GetAllByOwnerAsync(string ownerRegistrationNumber)
         {
             try

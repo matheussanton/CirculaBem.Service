@@ -26,11 +26,24 @@ namespace CirculaBem.Service.Host.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProductAsync(
-            [FromBody][Required] CreateProductCommand command,
-            [FromServices] Response response
-        )
+        public async Task<IActionResult> CreateProductAsync([FromBody][Required] CreateProductCommand command,
+                                                            [FromServices] Response response)
         {
+            await _mediator.Send(command);
+
+            if (response.Status == ResponseStatus.Fail)
+                return StatusCode((int)response.StatusCode, response.Notifications);
+
+            return Ok(response.Notifications);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProductAsync([FromRoute][Required] Guid id,
+                                                            [FromBody][Required] UpdateProductCommand command,
+                                                            [FromServices] Response response)
+        {
+            command.SetId(id);
+
             await _mediator.Send(command);
 
             if (response.Status == ResponseStatus.Fail)
@@ -66,19 +79,21 @@ namespace CirculaBem.Service.Host.Controllers
         //     return Ok(result.Notifications);
         // }
 
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> DeleteProductAsync(int id)
-        // {
-        //     var command = new DeleteProductCommand(id);
-        //     var result = await _mediator.Send(command);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProductAsync(Guid id,
+                                                            [FromServices] Response response)
+        {
+            var command = new DeleteProductCommand(id);
 
-        //     if (result.Status == ResponseStatus.Fail)
-        //     {
-        //         return StatusCode((int)result.StatusCode, result.Notifications);
-        //     }
+            await _mediator.Send(command);
 
-        //     return Ok(result.Notifications);
-        // }
+            if (response.Status == ResponseStatus.Fail)
+            {
+                return StatusCode((int)response.StatusCode, response.Notifications);
+            }
+
+            return Ok(response.Notifications);
+        }
     }
 
 }

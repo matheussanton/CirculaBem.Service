@@ -1,10 +1,11 @@
 using CirculaBem.Service.Domain.Entities;
-using MediatR;
 
 namespace CirculaBem.Service.Domain.Product.Commands
 {
-    public class CreateProductCommand : BaseProductCommand
+    public class UpdateProductCommand : BaseProductCommand
     {
+        public Guid Id { get; private set; }
+        public void SetId(Guid id) => Id = id;
 
         public ProductEntityDomain ParseToEntity()
         {
@@ -13,7 +14,8 @@ namespace CirculaBem.Service.Domain.Product.Commands
                 Description,
                 Price,
                 CategoryId,
-                OwnerRegistrationNumber
+                OwnerRegistrationNumber,
+                Id
             );
 
             var productImages = new List<ProductImageEntityDomain>();
@@ -26,7 +28,5 @@ namespace CirculaBem.Service.Domain.Product.Commands
 
             return productEntity;
         }
-
     }
-
 }

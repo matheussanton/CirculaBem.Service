@@ -22,9 +22,12 @@ namespace CirculaBem.Service.Infra.Data.Context
 
         public DbSet<UserEntityDomain> Users { get; set; }
 
+        public DbSet<CategoryEntityDomain> Categories { get; set; }
+
         public DbSet<ProductEntityDomain> Products { get; set; }
         public DbSet<ProductImageEntityDomain> ProductImages { get; set; }
         public DbSet<ProductAvailabilityEntityDomain> ProductAvailabilities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

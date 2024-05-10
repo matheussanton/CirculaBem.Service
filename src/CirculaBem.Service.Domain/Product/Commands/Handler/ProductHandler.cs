@@ -6,7 +6,9 @@ using MediatR;
 
 namespace CirculaBem.Service.Domain.Product.Commands.Handler
 {
-    public class ProductHandler : IRequestHandler<CreateProductCommand>
+    public class ProductHandler : IRequestHandler<CreateProductCommand>,
+                                  IRequestHandler<UpdateProductCommand>,
+                                  IRequestHandler<DeleteProductCommand>
     {
         private readonly IProductRepository _productRepository;
         private readonly Response _response;
@@ -23,6 +25,22 @@ namespace CirculaBem.Service.Domain.Product.Commands.Handler
             var product = request.ParseToEntity();
 
             await _productRepository.CreateAsync(product);
+
+            _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
+        }
+
+        public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        {
+            var product = request.ParseToEntity();
+
+            await _productRepository.UpdateAsync(product);
+
+            _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
+        }
+
+        public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        {
+            await _productRepository.DeleteAsync(request.Id);
 
             _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
         }
