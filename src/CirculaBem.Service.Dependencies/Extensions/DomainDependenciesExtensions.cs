@@ -3,6 +3,7 @@ using CirculaBem.Service.Domain.Responses;
 using Microsoft.Extensions.DependencyInjection;
 using CirculaBem.Service.Domain.Product.Commands.Handler;
 using CirculaBem.Service.Domain.Product.Queries;
+using CirculaBem.Service.Domain.Category.Commands.Handler;
 
 namespace CirculaBem.Service.Dependencies.Extensions
 {
@@ -21,6 +22,7 @@ namespace CirculaBem.Service.Dependencies.Extensions
         {
             services.AddScoped<UserHandler>();
             services.AddScoped<ProductHandler>();
+            services.AddScoped<CategoryHandler>();
         }
 
         private static void RegisterQueries(this IServiceCollection services)

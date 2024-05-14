@@ -10,8 +10,8 @@ namespace CirculaBem.Service.Domain.Product.Models
         public Guid CategoryId { get; set; }
         public string OwnerRegistrationNumber { get; set; }
 
-        public List<string> ImageUrls { get; set; }
-        public List<EProductAvailability> Availabilities { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
+        public List<EProductAvailability> Availabilities { get; set; } = new List<EProductAvailability>();
 
         public static void Map(dynamic obj, Dictionary<Guid, SelectProduct> map)
         {

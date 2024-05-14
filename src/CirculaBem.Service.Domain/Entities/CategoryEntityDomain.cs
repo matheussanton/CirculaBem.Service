@@ -15,5 +15,7 @@ namespace CirculaBem.Service.Domain.Entities
 
         public string Description { get; init; }
         public string ImageUrl { get; init; }
+
+        public ICollection<ProductEntityDomain> Products { get; set; }
     }
 }

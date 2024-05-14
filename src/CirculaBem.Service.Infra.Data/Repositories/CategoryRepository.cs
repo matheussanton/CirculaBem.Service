@@ -1,6 +1,8 @@
 using CirculaBem.Service.Domain.Category.Interfaces;
+using CirculaBem.Service.Domain.Category.Models;
 using CirculaBem.Service.Domain.Entities;
 using CirculaBem.Service.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CirculaBem.Service.Infra.Data.Repositories
@@ -60,6 +62,24 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "ERROR DELETING CATEGORY");
+            }
+        }
+
+        public async Task<List<SelectCategory>> GetCategoriesAsync()
+        {
+            try
+            {
+                return await _context.Categories.Select(c => new SelectCategory
+                {
+                    Id = c.Id,
+                    Description = c.Description,
+                    ImageUrl = c.ImageUrl
+                }).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR GETTING CATEGORIES");
+                return null;
             }
         }
     }

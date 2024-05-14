@@ -4,6 +4,7 @@ using CirculaBem.Service.Domain.Product.Interfaces;
 using CirculaBem.Service.Domain.Product.Models;
 using CirculaBem.Service.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 
@@ -98,19 +99,29 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             try
             {
                 var products = _context.Products
-                                    .Join(
-                                        _context.ProductAvailabilities,
-                                        p => p.Id,
-                                        pa => pa.ProductId,
-                                        (p, pa) => new { Product = p, ProductAvailability = pa })
-                                    .Join(
-                                        _context.ProductImages,
-                                        ppa => ppa.Product.Id,
-                                        pi => pi.ProductId,
-                                        (ppa, pi) => new { Product = ppa.Product, ProductAvailability = ppa.ProductAvailability, ProductImage = pi })
-                                    .Where(p => p.Product.OwnerRegistrationNumber == ownerRegistrationNumber)
-                                    .Select(joinResult => new { joinResult.Product, joinResult.ProductAvailability, joinResult.ProductImage })
-                                    .ToList();
+    .Select(p => new
+    {
+        Product = p,
+        ProductAvailabilities = _context.ProductAvailabilities
+            .Where(pa => pa.ProductId == p.Id)
+            .ToList(),  // Materialize the query to a list
+    })
+    .SelectMany(p => p.ProductAvailabilities.DefaultIfEmpty(), (p, pa) => new { p.Product, ProductAvailability = pa })
+    .Select(p => new
+    {
+        p.Product,
+        p.ProductAvailability,
+        ProductImages = _context.ProductImages
+            .Where(pi => pi.ProductId == p.Product.Id)
+            .ToList(),  // Materialize the query to a list
+    })
+    .SelectMany(p => p.ProductImages.DefaultIfEmpty(), (p, pi) => new { p.Product, p.ProductAvailability, ProductImage = pi })
+    .Where(p => p.Product.OwnerRegistrationNumber == ownerRegistrationNumber)
+    .ToList();
+
+
+
+
 
                 Dictionary<Guid, SelectProduct> map = new Dictionary<Guid, SelectProduct>();
 
@@ -136,11 +147,13 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                         });
                     }
 
-                    if (!map[product.Id].ImageUrls.Contains(image.ImageUrl))
-                        map[product.Id].ImageUrls.Add(image.ImageUrl);
+                    if (image != null)
+                        if (!map[product.Id].ImageUrls.Contains(image.ImageUrl))
+                            map[product.Id].ImageUrls.Add(image.ImageUrl);
 
-                    if (!map[product.Id].Availabilities.Contains((EProductAvailability)availability.Availability))
-                        map[product.Id].Availabilities.Add((EProductAvailability)availability.Availability);
+                    if (availability != null)
+                        if (!map[product.Id].Availabilities.Contains((EProductAvailability)availability.Availability))
+                            map[product.Id].Availabilities.Add((EProductAvailability)availability.Availability);
                 }
 
                 return map.Values.ToList();

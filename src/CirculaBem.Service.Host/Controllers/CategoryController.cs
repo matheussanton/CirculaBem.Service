@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using CirculaBem.Service.Domain.Product.Commands;
-using CirculaBem.Service.Domain.Product.Queries.Requests;
+using CirculaBem.Service.Domain.Category.Commands;
+using CirculaBem.Service.Domain.Category.Queries.Requests;
 using CirculaBem.Service.Domain.Responses;
 using CirculaBem.Service.Domain.Responses.Enums;
 using MediatR;
@@ -12,17 +12,17 @@ namespace CirculaBem.Service.Host.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class ProductController : ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ProductController(IMediator mediator)
+        public CategoryController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProductAsync([FromBody][Required] CreateProductCommand command,
+        public async Task<IActionResult> CreateCategoryAsync([FromBody][Required] CreateCategoryCommand command,
                                                             [FromServices] Response response)
         {
             await _mediator.Send(command);
@@ -34,8 +34,8 @@ namespace CirculaBem.Service.Host.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProductAsync([FromRoute][Required] Guid id,
-                                                            [FromBody][Required] UpdateProductCommand command,
+        public async Task<IActionResult> UpdateCategoryAsync([FromRoute][Required] Guid id,
+                                                            [FromBody][Required] UpdateCategoryCommand command,
                                                             [FromServices] Response response)
         {
             command.SetId(id);
@@ -48,24 +48,19 @@ namespace CirculaBem.Service.Host.Controllers
             return Ok(response.Notifications);
         }
 
-        [HttpGet("by-user")]
-        public async Task<IActionResult> GetProductAsync([FromQuery][Required] string userRegistrationNumber)
+        [HttpGet]
+        public async Task<IActionResult> GetCategoryAsync()
         {
-            var request = new GetUserProductsRequest()
-            {
-                UserRegistrationNumber = userRegistrationNumber
-            };
-
-            var result = await _mediator.Send(request);
+            var result = await _mediator.Send(new GetCategoriesRequest());
 
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductAsync(Guid id,
+        public async Task<IActionResult> DeleteCategoryAsync(Guid id,
                                                             [FromServices] Response response)
         {
-            var command = new DeleteProductCommand(id);
+            var command = new DeleteCategoryCommand(id);
 
             await _mediator.Send(command);
 
@@ -77,5 +72,4 @@ namespace CirculaBem.Service.Host.Controllers
             return Ok(response.Notifications);
         }
     }
-
 }

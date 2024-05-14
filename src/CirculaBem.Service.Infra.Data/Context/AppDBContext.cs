@@ -37,6 +37,7 @@ namespace CirculaBem.Service.Infra.Data.Context
 
             modelBuilder.ModelProduct();
 
+            modelBuilder.ModelCategory();
         }
 
     }

@@ -45,6 +45,9 @@ namespace CirculaBem.Service.Domain.Entities
         [NotMapped]
         public List<ProductAvailabilityEntityDomain> Availabilities { get; private set; }
         public void SetAvailabilities(List<ProductAvailabilityEntityDomain> availabilities) => Availabilities = availabilities;
+
+        [ForeignKey("CategoryId")]
+        public CategoryEntityDomain Category { get; set; }
     }
 
     [Table("productimage")]
