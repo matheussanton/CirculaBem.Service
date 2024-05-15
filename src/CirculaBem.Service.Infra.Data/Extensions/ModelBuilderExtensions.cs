@@ -28,5 +28,26 @@ namespace CirculaBem.Service.Infra.Data.Extensions
                         .HasKey(x => x.Id);
         }
 
+        public static void ModelRent(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RentEntityDomain>()
+                        .HasKey(x => x.Id);
+
+            modelBuilder.Entity<RentEntityDomain>()
+                        .HasKey(x => new { x.UserRegistrationNumber, x.ProductId, x.StartDate, x.EndDate });
+
+            modelBuilder.Entity<RentEntityDomain>()
+                        .HasOne(rent => rent.Product)                       // RentEntityDomain has one Product
+                        .WithMany()                                         // Product has many RentEntityDomain
+                        .HasForeignKey(rent => rent.ProductId)             // Foreign key property in RentEntityDomain
+                        .HasPrincipalKey(product => product.Id);            // Principal key property in Product
+
+            modelBuilder.Entity<RentEntityDomain>()
+                        .HasOne(rent => rent.User)                                      // RentEntityDomain has one User
+                        .WithMany()                                                     // User has many RentEntityDomain
+                        .HasForeignKey(rent => rent.UserRegistrationNumber)             // Foreign key property in RentEntityDomain
+                        .HasPrincipalKey(user => user.RegistrationNumber);            // Principal key property in User
+        }
+
     }
 }

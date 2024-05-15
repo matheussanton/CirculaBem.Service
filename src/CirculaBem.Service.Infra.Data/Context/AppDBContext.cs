@@ -28,6 +28,8 @@ namespace CirculaBem.Service.Infra.Data.Context
         public DbSet<ProductImageEntityDomain> ProductImages { get; set; }
         public DbSet<ProductAvailabilityEntityDomain> ProductAvailabilities { get; set; }
 
+        public DbSet<RentEntityDomain> Rents { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +40,8 @@ namespace CirculaBem.Service.Infra.Data.Context
             modelBuilder.ModelProduct();
 
             modelBuilder.ModelCategory();
+
+            modelBuilder.ModelRent();
         }
 
     }
