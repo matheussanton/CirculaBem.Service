@@ -73,7 +73,7 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                     .Where(x => x.ProductId == productId && x.StartDate >= startDate && x.EndDate <= endDate)
                     .Select(x => new SelectRent
                     {
-                        UserRegistrationNumber = x.UserRegistrationNumber,
+                        UserId = x.UserId,
                         ProductId = x.ProductId,
                         StartDate = x.StartDate,
                         EndDate = x.EndDate
@@ -89,15 +89,15 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             }
         }
 
-        public async Task<List<SelectRent>> SelectRentsByUserAsync(string userRegistrationNumber, DateTime startDate, DateTime endDate)
+        public async Task<List<SelectRent>> SelectRentsByUserAsync(Guid userId, DateTime startDate, DateTime endDate)
         {
             try
             {
                 var rents = await _context.Rents
-                    .Where(x => x.UserRegistrationNumber == userRegistrationNumber && x.StartDate >= startDate && x.EndDate <= endDate)
+                    .Where(x => x.UserId == userId && x.StartDate >= startDate && x.EndDate <= endDate)
                     .Select(x => new SelectRent
                     {
-                        UserRegistrationNumber = x.UserRegistrationNumber,
+                        UserId = x.UserId,
                         ProductId = x.ProductId,
                         StartDate = x.StartDate,
                         EndDate = x.EndDate

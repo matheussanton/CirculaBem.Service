@@ -9,22 +9,22 @@ namespace CirculaBem.Service.Domain.Entities
 
         public RentEntityDomain() { }
 
-        public RentEntityDomain(string userRegistrationNumber,
+        public RentEntityDomain(Guid userId,
                                 Guid productId,
                                 DateTime startDate,
                                 DateTime endDate,
                                 Guid id = default) : base(id)
         {
-            UserRegistrationNumber = userRegistrationNumber;
+            UserId = userId;
             ProductId = productId;
             StartDate = startDate;
             EndDate = endDate;
         }
 
         [Required]
-        [Column("userRegistrationNumber", TypeName = "varchar")]
-        public string UserRegistrationNumber { get; private set; }
-        [ForeignKey("UserRegistrationNumber")]
+        [Column("userId", TypeName = "uuid")]
+        public Guid UserId { get; private set; }
+        [ForeignKey("UserId")]
         public UserEntityDomain User { get; set; }
 
 

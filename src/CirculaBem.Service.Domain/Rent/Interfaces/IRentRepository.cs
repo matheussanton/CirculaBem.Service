@@ -10,6 +10,6 @@ namespace CirculaBem.Service.Domain.Rent.Interfaces
         Task DeleteAsync(Guid id);
 
         Task<List<SelectRent>> SelectRentsByProductAsync(Guid productId, DateTime startDate, DateTime endDate);
-        Task<List<SelectRent>> SelectRentsByUserAsync(string userRegistrationNumber, DateTime startDate, DateTime endDate);
+        Task<List<SelectRent>> SelectRentsByUserAsync(Guid userId, DateTime startDate, DateTime endDate);
     }
 }

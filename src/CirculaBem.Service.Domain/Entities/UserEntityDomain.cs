@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CirculaBem.Service.Domain.Entities
 {
     [Table("user")]
-    public class UserEntityDomain
+    public class UserEntityDomain : BaseEntityDomain
     {
         [Column("firstname", TypeName = "varchar(50)")]
         public string FirstName { get; private set; }
@@ -18,7 +18,7 @@ namespace CirculaBem.Service.Domain.Entities
         [Column("registrationnumber", TypeName = "varchar")]
         public string RegistrationNumber { get; private set; }
 
-        public UserEntityDomain(string firstName, string lastName, string email, string password, string registrationNumber)
+        public UserEntityDomain(string firstName, string lastName, string email, string password, string registrationNumber, Guid id = default) : base(id)
         {
             FirstName = firstName;
             LastName = lastName;
