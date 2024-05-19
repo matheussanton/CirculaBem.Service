@@ -1,5 +1,4 @@
 using System.Net;
-using CirculaBem.Service.Domain.Hash;
 using CirculaBem.Service.Domain.Rent.Interfaces;
 using CirculaBem.Service.Domain.Responses;
 using CirculaBem.Service.Domain.Responses.Enums;
@@ -26,19 +25,18 @@ namespace CirculaBem.Service.Domain.Rent.Commands.Handler
 
         public async Task Handle(CreateRentCommand request, CancellationToken cancellationToken)
         {
-            request.UserRegistrationNumber = Encrypter.Encrypt(request.UserRegistrationNumber, _configuration["Settings:EncryptionKey"]!);
-            var category = request.Parse();
+            var entity = request.Parse();
 
-            await _rentRepository.CreateAsync(category);
+            await _rentRepository.CreateAsync(entity);
 
             _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
         }
 
         public async Task Handle(UpdateRentCommand request, CancellationToken cancellationToken)
         {
-            var category = request.Parse();
+            var entity = request.Parse();
 
-            await _rentRepository.UpdateAsync(category);
+            await _rentRepository.UpdateAsync(entity);
 
             _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
         }

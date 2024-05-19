@@ -34,9 +34,15 @@ namespace CirculaBem.Service.Domain.Entities
         [Required]
         [Column("categoryid", TypeName = "uuid")]
         public Guid CategoryId { get; private set; }
+        [ForeignKey("CategoryId")]
+        public CategoryEntityDomain Category { get; set; }
+
 
         [Column("ownerregistrationnumber", TypeName = "varchar")]
         public string OwnerRegistrationNumber { get; private set; }
+        [ForeignKey("OwnerRegistrationNumber")]
+        public UserEntityDomain User { get; set; }
+
 
         [NotMapped]
         public List<ProductImageEntityDomain> ImageUrls { get; private set; }
@@ -45,9 +51,6 @@ namespace CirculaBem.Service.Domain.Entities
         [NotMapped]
         public List<ProductAvailabilityEntityDomain> Availabilities { get; private set; }
         public void SetAvailabilities(List<ProductAvailabilityEntityDomain> availabilities) => Availabilities = availabilities;
-
-        [ForeignKey("CategoryId")]
-        public CategoryEntityDomain Category { get; set; }
     }
 
     [Table("productimage")]

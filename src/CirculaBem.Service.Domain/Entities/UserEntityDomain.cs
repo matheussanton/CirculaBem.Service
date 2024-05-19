@@ -18,6 +18,8 @@ namespace CirculaBem.Service.Domain.Entities
         [Column("registrationnumber", TypeName = "varchar")]
         public string RegistrationNumber { get; private set; }
 
+        public ICollection<ProductEntityDomain> Products { get; set; }
+
         public UserEntityDomain(string firstName, string lastName, string email, string password, string registrationNumber)
         {
             FirstName = firstName;

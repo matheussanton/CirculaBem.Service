@@ -99,25 +99,25 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             try
             {
                 var products = _context.Products
-    .Select(p => new
-    {
-        Product = p,
-        ProductAvailabilities = _context.ProductAvailabilities
-            .Where(pa => pa.ProductId == p.Id)
-            .ToList(),  // Materialize the query to a list
-    })
-    .SelectMany(p => p.ProductAvailabilities.DefaultIfEmpty(), (p, pa) => new { p.Product, ProductAvailability = pa })
-    .Select(p => new
-    {
-        p.Product,
-        p.ProductAvailability,
-        ProductImages = _context.ProductImages
-            .Where(pi => pi.ProductId == p.Product.Id)
-            .ToList(),  // Materialize the query to a list
-    })
-    .SelectMany(p => p.ProductImages.DefaultIfEmpty(), (p, pi) => new { p.Product, p.ProductAvailability, ProductImage = pi })
-    .Where(p => p.Product.OwnerRegistrationNumber == ownerRegistrationNumber)
-    .ToList();
+                .Select(p => new
+                {
+                    Product = p,
+                    ProductAvailabilities = _context.ProductAvailabilities
+                        .Where(pa => pa.ProductId == p.Id)
+                        .ToList(),
+                })
+                .SelectMany(p => p.ProductAvailabilities.DefaultIfEmpty(), (p, pa) => new { p.Product, ProductAvailability = pa })
+                .Select(p => new
+                {
+                    p.Product,
+                    p.ProductAvailability,
+                    ProductImages = _context.ProductImages
+                        .Where(pi => pi.ProductId == p.Product.Id)
+                        .ToList(),
+                })
+                .SelectMany(p => p.ProductImages.DefaultIfEmpty(), (p, pi) => new { p.Product, p.ProductAvailability, ProductImage = pi })
+                .Where(p => p.Product.OwnerRegistrationNumber == ownerRegistrationNumber)
+                .ToList();
 
 
 

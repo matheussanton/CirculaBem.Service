@@ -85,6 +85,12 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                         principalTable: "category",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_product_user_ownerregistrationnumber",
+                        column: x => x.ownerregistrationnumber,
+                        principalTable: "user",
+                        principalColumn: "registrationnumber",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -120,6 +126,11 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                 column: "categoryid");
 
             migrationBuilder.CreateIndex(
+                name: "IX_product_ownerregistrationnumber",
+                table: "product",
+                column: "ownerregistrationnumber");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_rent_productid",
                 table: "rent",
                 column: "productid");
@@ -141,10 +152,10 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                 name: "product");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "category");
 
             migrationBuilder.DropTable(
-                name: "category");
+                name: "user");
         }
     }
 }

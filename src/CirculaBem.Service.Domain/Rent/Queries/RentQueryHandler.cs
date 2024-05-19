@@ -5,7 +5,8 @@ using MediatR;
 
 namespace CirculaBem.Service.Domain.Rent.Queries
 {
-    public class RentQueryHandler : IRequestHandler<GetRentsByProductRequest, List<SelectRent>>
+    public class RentQueryHandler : IRequestHandler<GetRentsByProductRequest, List<SelectRent>>,
+                                    IRequestHandler<GetRentsByUserRequest, List<SelectRent>>
     {
         private readonly IRentRepository _rentRepository;
 
@@ -17,6 +18,11 @@ namespace CirculaBem.Service.Domain.Rent.Queries
         public async Task<List<SelectRent>> Handle(GetRentsByProductRequest request, CancellationToken cancellationToken)
         {
             return await _rentRepository.SelectRentsByProductAsync(request.ProductId, request.StartDate, request.EndDate);
+        }
+
+        public async Task<List<SelectRent>> Handle(GetRentsByUserRequest request, CancellationToken cancellationToken)
+        {
+            return await _rentRepository.SelectRentsByUserAsync(request.UserRegistrationNumber, request.StartDate, request.EndDate);
         }
     }
 }

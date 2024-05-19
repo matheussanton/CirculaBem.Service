@@ -3,6 +3,7 @@ using CirculaBem.Service.Domain.Product.Interfaces;
 using CirculaBem.Service.Domain.Responses;
 using CirculaBem.Service.Domain.Responses.Enums;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace CirculaBem.Service.Domain.Product.Commands.Handler
 {
@@ -12,16 +13,19 @@ namespace CirculaBem.Service.Domain.Product.Commands.Handler
     {
         private readonly IProductRepository _productRepository;
         private readonly Response _response;
+        private readonly IConfiguration _configuration;
 
-        public ProductHandler(IProductRepository userRepository, Response response)
+        public ProductHandler(IProductRepository userRepository, Response response, IConfiguration configuration)
         {
             _productRepository = userRepository;
             _response = response;
+            _configuration = configuration;
         }
 
 
         public async Task Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
+            request.OwnerRegistrationNumber = Encrypter.Encrypt(request.OwnerRegistrationNumber, _configuration["Settings:EncryptionKey"]!);
             var product = request.ParseToEntity();
 
             await _productRepository.CreateAsync(product);

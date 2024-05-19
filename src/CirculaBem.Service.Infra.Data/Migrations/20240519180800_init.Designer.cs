@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CirculaBem.Service.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240517014858_init")]
+    [Migration("20240519180800_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -93,6 +93,8 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("OwnerRegistrationNumber");
 
                     b.ToTable("product");
                 });
@@ -188,7 +190,15 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CirculaBem.Service.Domain.Entities.UserEntityDomain", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("OwnerRegistrationNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.RentEntityDomain", b =>
@@ -211,6 +221,11 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                 });
 
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.CategoryEntityDomain", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("CirculaBem.Service.Domain.Entities.UserEntityDomain", b =>
                 {
                     b.Navigation("Products");
                 });

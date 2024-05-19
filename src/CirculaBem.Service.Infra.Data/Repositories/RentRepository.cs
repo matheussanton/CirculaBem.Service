@@ -73,6 +73,7 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                     .Where(x => x.ProductId == productId && x.StartDate >= startDate && x.EndDate <= endDate)
                     .Select(x => new SelectRent
                     {
+                        Id = x.Id,
                         UserRegistrationNumber = x.UserRegistrationNumber,
                         ProductId = x.ProductId,
                         StartDate = x.StartDate,
@@ -97,6 +98,7 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                     .Where(x => x.UserRegistrationNumber == userRegistrationNumber && x.StartDate >= startDate && x.EndDate <= endDate)
                     .Select(x => new SelectRent
                     {
+                        Id = x.Id,
                         UserRegistrationNumber = x.UserRegistrationNumber,
                         ProductId = x.ProductId,
                         StartDate = x.StartDate,

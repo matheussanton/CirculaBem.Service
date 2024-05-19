@@ -20,6 +20,11 @@ namespace CirculaBem.Service.Infra.Data.Extensions
                         .HasOne(x => x.Category)
                         .WithMany(x => x.Products)
                         .HasForeignKey(x => x.CategoryId);
+
+            modelBuilder.Entity<ProductEntityDomain>()
+                        .HasOne(x => x.User)
+                        .WithMany(x => x.Products)
+                        .HasForeignKey(x => x.OwnerRegistrationNumber);
         }
 
         public static void ModelCategory(this ModelBuilder modelBuilder)
