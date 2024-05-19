@@ -39,7 +39,7 @@ namespace CirculaBem.Service.Infra.Data.Extensions
                         .HasKey(x => x.Id);
 
             modelBuilder.Entity<RentEntityDomain>()
-                        .HasKey(x => new { x.UserId, x.ProductId, x.StartDate, x.EndDate });
+                        .HasKey(x => new { x.UserRegistrationNumber, x.ProductId, x.StartDate, x.EndDate });
 
             modelBuilder.Entity<RentEntityDomain>()
                         .HasOne(rent => rent.Product)                       // RentEntityDomain has one Product
@@ -50,7 +50,7 @@ namespace CirculaBem.Service.Infra.Data.Extensions
             modelBuilder.Entity<RentEntityDomain>()
                         .HasOne(rent => rent.User)                                      // RentEntityDomain has one User
                         .WithMany()                                                     // User has many RentEntityDomain
-                        .HasForeignKey(rent => rent.UserId)             // Foreign key property in RentEntityDomain
+                        .HasForeignKey(rent => rent.UserRegistrationNumber)             // Foreign key property in RentEntityDomain
                         .HasPrincipalKey(user => user.RegistrationNumber);            // Principal key property in User
         }
 
