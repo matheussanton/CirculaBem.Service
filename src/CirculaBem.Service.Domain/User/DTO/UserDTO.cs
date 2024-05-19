@@ -2,6 +2,7 @@ namespace CirculaBem.Service.Domain.User.DTO
 {
     public class UserDTO
     {
+        public Guid Id { get; set; }
         private string _registrationNumber = string.Empty;
         public string RegistrationNumber { get => _registrationNumber; set => _registrationNumber = MaskString(value); }
         public string Name { get; set; }
