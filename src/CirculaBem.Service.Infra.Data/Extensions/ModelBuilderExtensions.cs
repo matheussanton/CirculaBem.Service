@@ -8,7 +8,7 @@ namespace CirculaBem.Service.Infra.Data.Extensions
         public static void ModelUser(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserEntityDomain>()
-                        .HasKey(x => x.Id);
+                        .HasKey(x => x.RegistrationNumber);
         }
 
         public static void ModelProduct(this ModelBuilder modelBuilder)

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CirculaBem.Service.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240519180800_init")]
+    [Migration("20240519181643_init")]
     partial class init
     {
         /// <inheritdoc />
