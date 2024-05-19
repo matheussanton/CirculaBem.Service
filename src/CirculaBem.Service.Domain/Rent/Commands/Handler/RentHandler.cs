@@ -1,6 +1,10 @@
+using System.Net;
+using CirculaBem.Service.Domain.Hash;
 using CirculaBem.Service.Domain.Rent.Interfaces;
 using CirculaBem.Service.Domain.Responses;
+using CirculaBem.Service.Domain.Responses.Enums;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace CirculaBem.Service.Domain.Rent.Commands.Handler
 {
@@ -8,29 +12,42 @@ namespace CirculaBem.Service.Domain.Rent.Commands.Handler
                                IRequestHandler<UpdateRentCommand>,
                                IRequestHandler<DeleteRentCommand>
     {
-        private readonly IRentRepository _categoryRepository;
+        private readonly IRentRepository _rentRepository;
         private readonly Response _response;
+        private readonly IConfiguration _configuration;
 
-        public RentHandler(IRentRepository categoryRepository, Response response)
+        public RentHandler(IRentRepository rentRepository, Response response, IConfiguration configuration)
         {
-            _categoryRepository = categoryRepository;
+            _rentRepository = rentRepository;
             _response = response;
+            _configuration = configuration;
         }
 
 
         public async Task Handle(CreateRentCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            request.UserRegistrationNumber = Encrypter.Encrypt(request.UserRegistrationNumber, _configuration["Settings:EncryptionKey"]!);
+            var category = request.Parse();
+
+            await _rentRepository.CreateAsync(category);
+
+            _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
         }
 
         public async Task Handle(UpdateRentCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var category = request.Parse();
+
+            await _rentRepository.UpdateAsync(category);
+
+            _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
         }
 
         public async Task Handle(DeleteRentCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _rentRepository.DeleteAsync(request.Id);
+
+            _response.Send(ResponseStatus.Success, HttpStatusCode.OK);
         }
     }
 }

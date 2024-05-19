@@ -1,6 +1,8 @@
 using CirculaBem.Service.Domain.Entities;
 using CirculaBem.Service.Domain.Rent.Interfaces;
+using CirculaBem.Service.Domain.Rent.Models;
 using CirculaBem.Service.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CirculaBem.Service.Infra.Data.Repositories
@@ -60,6 +62,54 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "ERROR DELETING RENT");
+            }
+        }
+
+        public async Task<List<SelectRent>> SelectRentsByProductAsync(Guid productId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                var rents = await _context.Rents
+                    .Where(x => x.ProductId == productId && x.StartDate >= startDate && x.EndDate <= endDate)
+                    .Select(x => new SelectRent
+                    {
+                        UserRegistrationNumber = x.UserRegistrationNumber,
+                        ProductId = x.ProductId,
+                        StartDate = x.StartDate,
+                        EndDate = x.EndDate
+                    })
+                    .ToListAsync();
+
+                return rents;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR SELECTING RENTS BY PRODUCT");
+                return null;
+            }
+        }
+
+        public async Task<List<SelectRent>> SelectRentsByUserAsync(string userRegistrationNumber, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                var rents = await _context.Rents
+                    .Where(x => x.UserRegistrationNumber == userRegistrationNumber && x.StartDate >= startDate && x.EndDate <= endDate)
+                    .Select(x => new SelectRent
+                    {
+                        UserRegistrationNumber = x.UserRegistrationNumber,
+                        ProductId = x.ProductId,
+                        StartDate = x.StartDate,
+                        EndDate = x.EndDate
+                    })
+                    .ToListAsync();
+
+                return rents;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR SELECTING RENTS BY USER");
+                return null;
             }
         }
     }

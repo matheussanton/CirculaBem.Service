@@ -23,18 +23,18 @@ namespace CirculaBem.Service.Domain.Entities
 
         [Required]
         [Column("userRegistrationNumber", TypeName = "varchar")]
-        public string UserRegistrationNumber { get; set; }
-        [ForeignKey("userRegistrationNumber")]
+        public string UserRegistrationNumber { get; private set; }
+        [ForeignKey("UserRegistrationNumber")]
         public UserEntityDomain User { get; set; }
 
 
         [Required]
         [Column("productid", TypeName = "uuid")]
-        public Guid ProductId { get; set; }
-        [ForeignKey("productid")]
+        public Guid ProductId { get; private set; }
+        [ForeignKey("ProductId")]
         public ProductEntityDomain Product { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime StartDate { get; private set; }
+        public DateTime EndDate { get; private set; }
     }
 }

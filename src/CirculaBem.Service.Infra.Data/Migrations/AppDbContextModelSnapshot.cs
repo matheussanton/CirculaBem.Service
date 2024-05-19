@@ -115,6 +115,33 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                     b.ToTable("productimage");
                 });
 
+            modelBuilder.Entity("CirculaBem.Service.Domain.Entities.RentEntityDomain", b =>
+                {
+                    b.Property<string>("UserRegistrationNumber")
+                        .HasColumnType("varchar")
+                        .HasColumnName("userRegistrationNumber");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("productid");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.HasKey("UserRegistrationNumber", "ProductId", "StartDate", "EndDate");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("rent");
+                });
+
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.UserEntityDomain", b =>
                 {
                     b.Property<string>("RegistrationNumber")
@@ -159,6 +186,25 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CirculaBem.Service.Domain.Entities.RentEntityDomain", b =>
+                {
+                    b.HasOne("CirculaBem.Service.Domain.Entities.ProductEntityDomain", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CirculaBem.Service.Domain.Entities.UserEntityDomain", "User")
+                        .WithMany()
+                        .HasForeignKey("UserRegistrationNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.CategoryEntityDomain", b =>

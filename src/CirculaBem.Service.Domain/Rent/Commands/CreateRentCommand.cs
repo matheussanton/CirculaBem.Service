@@ -6,11 +6,11 @@ namespace CirculaBem.Service.Domain.Rent.Commands
     {
         public override RentEntityDomain Parse()
         => new RentEntityDomain
-        {
+        (
             UserRegistrationNumber = UserRegistrationNumber,
             ProductId = ProductId,
             StartDate = StartDate,
             EndDate = EndDate
-        };
+        );
     }
 }
