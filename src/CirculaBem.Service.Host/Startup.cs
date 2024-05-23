@@ -1,4 +1,6 @@
 using CirculaBem.Service.Dependencies.Extensions;
+using CirculaBem.Service.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace CirculaBem.Service.Host
@@ -80,11 +82,11 @@ namespace CirculaBem.Service.Host
 
             // app.MapHub<NotificationHub>("/notifications");
 
-            // using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
-            // {
-            //     var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
-            //     context.Database.Migrate();
-            // }
+            using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+                context.Database.Migrate();
+            }
         }
 
 
