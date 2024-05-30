@@ -10,5 +10,6 @@ namespace CirculaBem.Service.Domain.Product.Interfaces
         Task DeleteAsync(Guid id);
 
         Task<List<SelectProduct>> GetAllByOwnerAsync(string ownerRegistrationNumber);
+        Task<List<SelectProduct>> GetAllAsync();
     }
 }

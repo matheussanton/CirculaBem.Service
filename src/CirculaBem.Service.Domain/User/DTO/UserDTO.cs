@@ -2,9 +2,9 @@ namespace CirculaBem.Service.Domain.User.DTO
 {
     public class UserDTO
     {
-        public Guid Id { get; set; }
         private string _registrationNumber = string.Empty;
-        public string RegistrationNumber { get => _registrationNumber; set => _registrationNumber = MaskString(value); }
+        public string MaskedRegistrationNumber { get => _registrationNumber; set => _registrationNumber = MaskString(value); }
+        public string RegistrationNumber { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }

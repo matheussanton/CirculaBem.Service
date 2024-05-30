@@ -62,7 +62,8 @@ namespace CirculaBem.Service.Domain.Authentication.Commands.Handler
                 {
                     Email = userRecord.Email,
                     Name = userRecord.GetFullName(),
-                    RegistrationNumber = Encrypter.Decrypt(userRecord.RegistrationNumber, _appSettings.EncryptionKey),
+                    MaskedRegistrationNumber = Encrypter.Decrypt(userRecord.RegistrationNumber, _appSettings.EncryptionKey),
+                    RegistrationNumber = userRecord.RegistrationNumber,
                     Token = tokenString
                 };
 

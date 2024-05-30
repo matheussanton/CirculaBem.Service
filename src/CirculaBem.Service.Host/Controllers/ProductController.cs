@@ -48,6 +48,16 @@ namespace CirculaBem.Service.Host.Controllers
             return Ok(response.Notifications);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetProductAsync()
+        {
+            var request = new GetAllProductsRequest() { };
+
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
+        }
+
         [HttpGet("by-user")]
         public async Task<IActionResult> GetProductAsync([FromQuery][Required] string userRegistrationNumber)
         {

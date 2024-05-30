@@ -16,9 +16,11 @@ namespace CirculaBem.Service.Host
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 
-            var appSettings = services.RegisterAppSettings(Configuration);
+            Console.WriteLine($"CurrentEnvironment.EnvironmentName: {CurrentEnvironment.EnvironmentName}");
+            Console.WriteLine($"Services is null: {services == null}");
+            Console.WriteLine($"Configuration is null: {Configuration == null}");
 
-            Console.WriteLine($"AppSettings.ConnString: {appSettings.PostgreSQLConnectionString}");
+            var appSettings = services.RegisterAppSettings(Configuration);
 
             services.RegisterAuthentication(appSettings.JwtSecretKey);
 
@@ -59,15 +61,14 @@ namespace CirculaBem.Service.Host
 
         public void Configure(WebApplication app, IHostEnvironment env)
         {
-            if (CurrentEnvironment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            // if (CurrentEnvironment.IsDevelopment())
+            // {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            //}
 
             app.UseCors(builder =>
                 builder
-                .WithOrigins("http://localhost:3000")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()

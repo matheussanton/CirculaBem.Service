@@ -25,7 +25,6 @@ namespace CirculaBem.Service.Domain.Product.Commands.Handler
 
         public async Task Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            request.OwnerRegistrationNumber = Encrypter.Encrypt(request.OwnerRegistrationNumber, _configuration["Settings:EncryptionKey"]!);
             var product = request.ParseToEntity();
 
             await _productRepository.CreateAsync(product);
