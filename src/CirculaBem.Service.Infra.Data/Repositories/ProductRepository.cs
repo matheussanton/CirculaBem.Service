@@ -4,9 +4,7 @@ using CirculaBem.Service.Domain.Product.Interfaces;
 using CirculaBem.Service.Domain.Product.Models;
 using CirculaBem.Service.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 
 namespace CirculaBem.Service.Infra.Data.Repositories
 {
@@ -91,6 +89,77 @@ namespace CirculaBem.Service.Infra.Data.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "ERROR DELETING PRODUCT");
+            }
+        }
+
+        public async Task<SelectProduct> GetByIdAsync(Guid id)
+        {
+            try
+            {
+                var products = _context.Products
+                .Select(p => new
+                {
+                    Product = p,
+                    ProductAvailabilities = _context.ProductAvailabilities
+                        .Where(pa => pa.ProductId == p.Id)
+                        .ToList(),
+                })
+                .SelectMany(p => p.ProductAvailabilities.DefaultIfEmpty(), (p, pa) => new { p.Product, ProductAvailability = pa })
+                .Select(p => new
+                {
+                    p.Product,
+                    p.ProductAvailability,
+                    ProductImages = _context.ProductImages
+                        .Where(pi => pi.ProductId == p.Product.Id)
+                        .ToList(),
+                })
+                .SelectMany(p => p.ProductImages.DefaultIfEmpty(), (p, pi) => new { p.Product, p.ProductAvailability, ProductImage = pi })
+                .Where(p => p.Product.Id == id)
+                .ToList();
+
+
+
+
+
+                Dictionary<Guid, SelectProduct> map = new Dictionary<Guid, SelectProduct>();
+
+                foreach (var obj in products)
+                {
+                    // SelectProduct.Map(product, map);
+
+                    var product = obj.Product;
+                    var availability = obj.ProductAvailability;
+                    var image = obj.ProductImage;
+
+                    if (!map.ContainsKey(product.Id))
+                    {
+                        map.Add(product.Id, new SelectProduct
+                        {
+                            Id = product.Id,
+                            Description = product.Description,
+                            Price = product.Price,
+                            CategoryId = product.CategoryId,
+                            OwnerRegistrationNumber = product.OwnerRegistrationNumber,
+                            ImageUrls = new List<string>(),
+                            Availabilities = new List<EProductAvailability>()
+                        });
+                    }
+
+                    if (image != null)
+                        if (!map[product.Id].ImageUrls.Contains(image.ImageUrl))
+                            map[product.Id].ImageUrls.Add(image.ImageUrl);
+
+                    if (availability != null)
+                        if (!map[product.Id].Availabilities.Contains((EProductAvailability)availability.Availability))
+                            map[product.Id].Availabilities.Add((EProductAvailability)availability.Availability);
+                }
+
+                return map.Values.First();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR GETTING PRODUCTS BY OWNER");
+                return new SelectProduct();
             }
         }
 

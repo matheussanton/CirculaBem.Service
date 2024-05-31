@@ -9,6 +9,7 @@ namespace CirculaBem.Service.Domain.Product.Interfaces
         Task UpdateAsync(ProductEntityDomain product);
         Task DeleteAsync(Guid id);
 
+        Task<SelectProduct> GetByIdAsync(Guid id);
         Task<List<SelectProduct>> GetAllByOwnerAsync(string ownerRegistrationNumber);
         Task<List<SelectProduct>> GetAllAsync();
     }

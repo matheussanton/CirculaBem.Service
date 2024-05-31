@@ -8,7 +8,8 @@ namespace CirculaBem.Service.Domain.Product.Queries
 {
 
     public class ProductQueryHandler : IRequestHandler<GetUserProductsRequest, List<SelectProduct>>,
-                                       IRequestHandler<GetAllProductsRequest, List<SelectProduct>>
+                                       IRequestHandler<GetAllProductsRequest, List<SelectProduct>>,
+                                       IRequestHandler<GetProductByIdRequest, SelectProduct>
     {
         private readonly IProductRepository _productRepository;
         private readonly IConfiguration _configuration;
@@ -28,6 +29,11 @@ namespace CirculaBem.Service.Domain.Product.Queries
         public async Task<List<SelectProduct>> Handle(GetAllProductsRequest request, CancellationToken cancellationToken)
         {
             return await _productRepository.GetAllAsync();
+        }
+
+        public async Task<SelectProduct> Handle(GetProductByIdRequest request, CancellationToken cancellationToken)
+        {
+            return await _productRepository.GetByIdAsync(request.Id);
         }
     }
 }

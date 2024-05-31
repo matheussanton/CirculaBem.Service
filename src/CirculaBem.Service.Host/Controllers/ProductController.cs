@@ -58,6 +58,19 @@ namespace CirculaBem.Service.Host.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductByIdAsync([FromRoute][Required] Guid id)
+        {
+            var request = new GetProductByIdRequest()
+            {
+                Id = id
+            };
+
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
+        }
+
         [HttpGet("by-user")]
         public async Task<IActionResult> GetProductAsync([FromQuery][Required] string userRegistrationNumber)
         {
