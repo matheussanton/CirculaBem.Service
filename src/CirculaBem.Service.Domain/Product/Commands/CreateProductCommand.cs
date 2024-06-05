@@ -10,6 +10,7 @@ namespace CirculaBem.Service.Domain.Product.Commands
         {
             var productEntity = new ProductEntityDomain
             (
+                Name,
                 Description,
                 Price,
                 CategoryId,

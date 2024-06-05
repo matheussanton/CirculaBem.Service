@@ -5,6 +5,7 @@ namespace CirculaBem.Service.Domain.Product.Models
     public class SelectProduct
     {
         public Guid Id { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; } = 0;
         public Guid CategoryId { get; set; }
@@ -23,6 +24,7 @@ namespace CirculaBem.Service.Domain.Product.Models
             {
                 map.Add(product.Id, new SelectProduct
                 {
+                    Name = product.Name,
                     Id = product.Id,
                     Description = product.Description,
                     Price = product.Price,

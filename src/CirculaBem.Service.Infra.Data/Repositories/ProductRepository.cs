@@ -136,6 +136,7 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                         map.Add(product.Id, new SelectProduct
                         {
                             Id = product.Id,
+                            Name = product.Name,
                             Description = product.Description,
                             Price = product.Price,
                             CategoryId = product.CategoryId,
@@ -207,6 +208,7 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                         map.Add(product.Id, new SelectProduct
                         {
                             Id = product.Id,
+                            Name = product.Name,
                             Description = product.Description,
                             Price = product.Price,
                             CategoryId = product.CategoryId,
@@ -276,6 +278,7 @@ namespace CirculaBem.Service.Infra.Data.Repositories
                         map.Add(product.Id, new SelectProduct
                         {
                             Id = product.Id,
+                            Name = product.Name,
                             Description = product.Description,
                             Price = product.Price,
                             CategoryId = product.CategoryId,

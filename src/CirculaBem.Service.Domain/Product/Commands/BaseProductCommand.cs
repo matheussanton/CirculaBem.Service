@@ -4,6 +4,7 @@ namespace CirculaBem.Service.Domain.Product.Commands
 {
     public class BaseProductCommand : IRequest
     {
+        public string Name { get; set; }
         public string Description { get; set; }
         public List<string> ImageUrls { get; set; }
         public List<short> Availabilities { get; set; }

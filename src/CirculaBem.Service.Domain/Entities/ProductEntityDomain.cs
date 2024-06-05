@@ -9,6 +9,7 @@ namespace CirculaBem.Service.Domain.Entities
         public ProductEntityDomain() { }
 
         public ProductEntityDomain(
+            string name,
             string description,
             decimal price,
             Guid categoryId,
@@ -16,12 +17,16 @@ namespace CirculaBem.Service.Domain.Entities
             Guid id = default
         ) : base(id)
         {
+            Name = name;
             Description = description;
             Price = price;
             CategoryId = categoryId;
             OwnerRegistrationNumber = ownerRegistrationNumber;
         }
 
+        [Required]
+        [Column("name", TypeName = "varchar(100)")]
+        public string Name { get; private set; }
 
         [Required]
         [Column("description", TypeName = "varchar(300)")]
