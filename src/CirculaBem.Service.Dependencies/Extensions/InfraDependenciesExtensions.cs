@@ -30,6 +30,7 @@ namespace CirculaBem.Service.Dependencies.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IRentRepository, RentRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

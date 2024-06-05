@@ -3,6 +3,7 @@ using CirculaBem.Service.Domain.User.Commands;
 using CirculaBem.Service.Domain.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using CirculaBem.Service.Domain.User.Queries.Requests;
 
 namespace CirculaBem.Service.Host.Controllers
 {
@@ -33,6 +34,19 @@ namespace CirculaBem.Service.Host.Controllers
             }
 
             return Ok(response.Notifications);
+        }
+
+        [HttpGet("{registrationNumber}")]
+        public async Task<IActionResult> GetByRegistrationNumberAsync(string registrationNumber)
+        {
+            var response = await _mediator.Send(new GetUserByRegistrationNumberRequest() { RegistrationNumber = registrationNumber });
+
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(response);
         }
     }
 }

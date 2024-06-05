@@ -22,6 +22,8 @@ namespace CirculaBem.Service.Infra.Data.Context
 
         public DbSet<UserEntityDomain> Users { get; set; }
 
+        public DbSet<AddressEntityDomain> Adresses { get; set; }
+
         public DbSet<CategoryEntityDomain> Categories { get; set; }
 
         public DbSet<ProductEntityDomain> Products { get; set; }
@@ -36,6 +38,8 @@ namespace CirculaBem.Service.Infra.Data.Context
             //User
             modelBuilder.ModelUser();
             // modelBuilder.SeedDefaultUser();
+
+            modelBuilder.ModeAddress();
 
             modelBuilder.ModelProduct();
 

@@ -1,4 +1,5 @@
 using CirculaBem.Service.Domain.Entities;
+using CirculaBem.Service.Domain.User.Models;
 
 namespace CirculaBem.Service.Domain.User.Interfaces
 {
@@ -6,5 +7,6 @@ namespace CirculaBem.Service.Domain.User.Interfaces
     {
         Task CreateAsync(UserEntityDomain userEntity);
         Task<UserEntityDomain> GetByEmailAsync(string email);
+        Task<SelectUserModel> GetByRegistrationNumberAsync(string registrationNumber);
     }
 }

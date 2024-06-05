@@ -26,6 +26,8 @@ namespace CirculaBem.Service.Domain.User.Commands.Handler
             request.Password = Hasher.Hash(request.Password);
             request.RegistrationNumber = Encrypter.Encrypt(request.RegistrationNumber, _configuration["Settings:EncryptionKey"]!);
 
+            request.Address.UserRegistrationNumber = request.RegistrationNumber;
+
             var record = await _userRepository.GetByEmailAsync(request.Email);
             if (record != null)
             {

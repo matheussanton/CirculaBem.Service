@@ -5,6 +5,18 @@ namespace CirculaBem.Service.Domain.Entities
     [Table("user")]
     public class UserEntityDomain
     {
+        public UserEntityDomain() { }
+
+        public UserEntityDomain(string firstName, string lastName, string email, string password, string registrationNumber, AddressEntityDomain? address = null)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Password = password;
+            RegistrationNumber = registrationNumber;
+            Address = address;
+        }
+
         [Column("firstname", TypeName = "varchar(50)")]
         public string FirstName { get; private set; }
         [Column("lastname", TypeName = "varchar(50)")]
@@ -18,15 +30,10 @@ namespace CirculaBem.Service.Domain.Entities
         [Column("registrationnumber", TypeName = "varchar")]
         public string RegistrationNumber { get; private set; }
 
-        public ICollection<ProductEntityDomain> Products { get; set; }
+        [NotMapped]
+        public AddressEntityDomain Address { get; set; }
 
-        public UserEntityDomain(string firstName, string lastName, string email, string password, string registrationNumber)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = password;
-            RegistrationNumber = registrationNumber;
-        }
+        public ICollection<ProductEntityDomain> Products { get; set; }
+        public ICollection<AddressEntityDomain> Addresses { get; set; }
     }
 }

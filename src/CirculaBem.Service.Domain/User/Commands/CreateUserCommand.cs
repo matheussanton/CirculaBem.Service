@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using CirculaBem.Service.Domain.Address.Commands;
 using CirculaBem.Service.Domain.Entities;
 using Flunt.Notifications;
 using MediatR;
@@ -18,6 +19,8 @@ namespace CirculaBem.Service.Domain.User.Commands
         [JsonPropertyName("regNum")]
         public string RegistrationNumber { get; set; }
 
+        public CreateAddressCommand Address { get; set; }
+
 
         public UserEntityDomain Parse()
         {
@@ -26,7 +29,8 @@ namespace CirculaBem.Service.Domain.User.Commands
                 LastName,
                 Email,
                 Password,
-                RegistrationNumber
+                RegistrationNumber,
+                Address.ParseToEntity()
             );
         }
     }

@@ -11,6 +11,17 @@ namespace CirculaBem.Service.Infra.Data.Extensions
                         .HasKey(x => x.RegistrationNumber);
         }
 
+        public static void ModeAddress(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AddressEntityDomain>()
+                        .HasKey(x => x.Id);
+
+            modelBuilder.Entity<AddressEntityDomain>()
+                        .HasOne(x => x.User)
+                        .WithMany(x => x.Addresses)
+                        .HasForeignKey(x => x.UserRegistrationNumber);
+        }
+
         public static void ModelProduct(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductEntityDomain>()
