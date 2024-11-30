@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CirculaBem.Service.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,10 +67,36 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "adresses",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    userregistrationnumber = table.Column<string>(type: "varchar", nullable: false),
+                    cep = table.Column<string>(type: "varchar(8)", nullable: false),
+                    state = table.Column<string>(type: "char(2)", nullable: false),
+                    city = table.Column<string>(type: "varchar(100)", nullable: false),
+                    neighborhood = table.Column<string>(type: "varchar(100)", nullable: false),
+                    street = table.Column<string>(type: "varchar(100)", nullable: false),
+                    number = table.Column<short>(type: "smallint", nullable: false),
+                    complement = table.Column<string>(type: "varchar(100)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_adresses", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_adresses_user_userregistrationnumber",
+                        column: x => x.userregistrationnumber,
+                        principalTable: "user",
+                        principalColumn: "registrationnumber",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "product",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "varchar(100)", nullable: false),
                     description = table.Column<string>(type: "varchar(300)", nullable: false),
                     price = table.Column<decimal>(type: "numeric(8,2)", nullable: false),
                     categoryid = table.Column<Guid>(type: "uuid", nullable: false),
@@ -121,6 +147,11 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_adresses_userregistrationnumber",
+                table: "adresses",
+                column: "userregistrationnumber");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_product_categoryid",
                 table: "product",
                 column: "categoryid");
@@ -139,6 +170,9 @@ namespace CirculaBem.Service.Infra.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "adresses");
+
             migrationBuilder.DropTable(
                 name: "productavailability");
 

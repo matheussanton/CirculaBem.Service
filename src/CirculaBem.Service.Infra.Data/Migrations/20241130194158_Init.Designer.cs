@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CirculaBem.Service.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240519181643_init")]
-    partial class init
+    [Migration("20241130194158_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,59 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CirculaBem.Service.Domain.Entities.AddressEntityDomain", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasColumnType("varchar(8)")
+                        .HasColumnName("cep");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("city");
+
+                    b.Property<string>("Complement")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("complement");
+
+                    b.Property<string>("Neighborhood")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("neighborhood");
+
+                    b.Property<short>("Number")
+                        .HasColumnType("smallint")
+                        .HasColumnName("number");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("char(2)")
+                        .HasColumnName("state");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("street");
+
+                    b.Property<string>("UserRegistrationNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar")
+                        .HasColumnName("userregistrationnumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserRegistrationNumber");
+
+                    b.ToTable("adresses");
+                });
 
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.CategoryEntityDomain", b =>
                 {
@@ -80,6 +133,11 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(300)")
                         .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
 
                     b.Property<string>("OwnerRegistrationNumber")
                         .IsRequired()
@@ -182,6 +240,17 @@ namespace CirculaBem.Service.Infra.Data.Migrations
                     b.ToTable("user");
                 });
 
+            modelBuilder.Entity("CirculaBem.Service.Domain.Entities.AddressEntityDomain", b =>
+                {
+                    b.HasOne("CirculaBem.Service.Domain.Entities.UserEntityDomain", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserRegistrationNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.ProductEntityDomain", b =>
                 {
                     b.HasOne("CirculaBem.Service.Domain.Entities.CategoryEntityDomain", "Category")
@@ -227,6 +296,8 @@ namespace CirculaBem.Service.Infra.Data.Migrations
 
             modelBuilder.Entity("CirculaBem.Service.Domain.Entities.UserEntityDomain", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
